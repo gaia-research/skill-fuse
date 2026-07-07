@@ -7,7 +7,17 @@ TARGET=""
 for d in .agents/skills .claude/skills; do
   [[ -d "$d" ]] && TARGET="$d" && break
 done
-[[ -z "$TARGET" ]] && TARGET=".agents/skills" && mkdir -p "$TARGET"
+
+if [[ -z "$TARGET" ]]; then
+  if [[ -d ".claude" ]]; then
+    TARGET=".claude/skills"
+  elif [[ -d ".agents" ]]; then
+    TARGET=".agents/skills"
+  else
+    TARGET=".agents/skills"
+  fi
+  mkdir -p "$TARGET"
+fi
 
 # Clone and clean
 git clone --depth 1 https://github.com/mbtiongson1/skill-fuse.git "$TARGET/fuse" 2>/dev/null

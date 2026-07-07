@@ -31,7 +31,33 @@ for skill_dir in "$DIR"/*/; do
   for md in "$skill_dir"SKILL.md "$skill_dir"*.md; do
     if [[ -f "$md" ]]; then
       # Extract description from YAML frontmatter
-      desc=$(sed -n '/^---$/,/^---$/{ /^description:/{ s/^description:[[:space:]]*//; p; q; } }' "$md" 2>/dev/null || true)
+      desc=$(awk '
+        BEGIN { in_yaml=0; desc="" }
+        /^---$/ {
+          in_yaml++;
+          if (in_yaml == 2) exit;
+          next;
+        }
+        in_yaml == 1 {
+          if ($0 ~ /^description:/) {
+            idx = index($0, ":");
+            val = substr($0, idx + 1);
+            gsub(/^[ \t]+|[ \t]+$/, "", val);
+            if (val ~ /^[>|]/) {
+              getline;
+              gsub(/^[ \t]+|[ \t]+$/, "", $0);
+              desc = $0;
+            } else {
+              if (val ~ /^".*"$/ || val ~ /^\x27.*\x27$/) {
+                val = substr(val, 2, length(val) - 2);
+              }
+              desc = val;
+            }
+            exit;
+          }
+        }
+        END { print desc }
+      ' "$md" 2>/dev/null || true)
       [[ -n "$desc" ]] && break
     fi
   done
