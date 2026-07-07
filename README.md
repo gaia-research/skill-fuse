@@ -21,7 +21,7 @@ bash <(curl -sL https://raw.githubusercontent.com/mbtiongson1/skill-fuse/main/in
 Or clone manually:
 
 ```bash
-git clone --depth 1 https://github.com/mbtiongson1/skill-fuse.git .agents/skills/fuse
+git clone --depth 1 https://github.com/gaia-research/skill-fuse.git .agents/skills/fuse
 rm -rf .agents/skills/fuse/.git
 ```
 

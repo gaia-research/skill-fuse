@@ -20,7 +20,7 @@ if [[ -z "$TARGET" ]]; then
 fi
 
 # Clone and clean
-git clone --depth 1 https://github.com/mbtiongson1/skill-fuse.git "$TARGET/fuse" 2>/dev/null
+git clone --depth 1 https://github.com/gaia-research/skill-fuse.git "$TARGET/fuse" 2>/dev/null
 rm -rf "$TARGET/fuse/.git"
 
 echo ""
