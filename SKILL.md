@@ -14,9 +14,9 @@ A sequential routing pipeline to compose two installed skills into a single inte
 
 Execute these steps in order to perform a skill fusion:
 
-| Step | Action | Routing Reference |
+| Step | Action | Reference |
 |---|---|---|
-| 1 | **Detect** | Find and confirm the two source skills | [reference/detect.md](reference/detect.md) |
-| 2 | **Compose** | Read sources and apply the fusion prompt | [reference/compose.md](reference/compose.md) |
-| 3 | **Name** | Propose, validate, and select a target name | [reference/name.md](reference/name.md) |
-| 4 | **Register** | Write the files and log the fusion event | [reference/register.md](reference/register.md) |
+| 1 | **Detect** -- find and confirm the two source skills | [reference/detect.md](reference/detect.md) |
+| 2 | **Compose** -- read sources and apply the fusion prompt | [reference/compose.md](reference/compose.md) |
+| 3 | **Name** -- propose, validate, and select a target name | [reference/name.md](reference/name.md) |
+| 4 | **Register** -- write the files and log the fusion event | [reference/register.md](reference/register.md) |
