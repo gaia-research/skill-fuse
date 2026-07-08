@@ -11,6 +11,32 @@
 
 **New to skills?** A skill is a custom `/command` in Claude Code, Cursor, or Windsurf — like a Slack slash command, but for your AI coding agent. If you've installed `shape`, `audit`, or `refactor` as three separate commands, skill-fuse merges them so you run one command that does all three.
 
+## Quick Start (30 seconds)
+
+```bash
+# 1. Install
+bash <(curl -sL https://raw.githubusercontent.com/gaia-research/skill-fuse/main/install.sh)
+
+# 2. Invoke from any agent conversation
+/fuse shape + audit
+```
+
+**Before → After**
+
+| Before skill-fuse | After skill-fuse |
+|---|---|
+| 3 overlapping `/commands` in `.claude/skills/` | 1 unified `/command` |
+| ~200-line system prompt loaded 3× per session | Loaded once, deduped |
+| Agent picks wrong command mid-task | One trigger — no wrong-picks |
+
+### Troubleshooting the first run
+
+- **`command not found: bash`** on Windows — use Git Bash or WSL.
+- **`Permission denied`** when writing the fused skill — check that your skills dir (`~/.claude/skills/`, `.agents/skills/`, or `.cursor/rules/`) is writable.
+- **Wrong install path** — `install.sh` auto-detects; if it picks the wrong one, clone manually into the target directory and skip the installer.
+
+---
+
 ## Why it exists
 
 **Agent skill merge is a real problem.** You install `shape` for UX planning, `audit` for UI review, and `refactor` for cleanup — now every task juggles three `/commands`, three prompt budgets, three chances for the agent to pick the wrong one. `skill-fuse` composes overlapping `SKILL.md` files into a single fused skill: one trigger, one flow, one prompt. Whether you're reducing slash command clutter in Claude Code, combining Cursor rules across projects, or merging Windsurf cascades, skill-fuse consolidates and organizes them into one command.
@@ -124,28 +150,40 @@ Any agent that reads `SKILL.md`:
 | Framework-specific plugin | Framework-native format only | One framework | Framework runtime |
 | Cursor rules compositor | `.cursor/rules/` files → single rule set | One Cursor project | Cursor runtime |
 | MCP tool merger | Multiple MCP tools → composed protocol tool | Separate service | MCP SDK + runtime |
+| **Cursor native rules** | Rules file layering only — no fusion, no dedup | Cursor-only, `.cursor/rules/` | Cursor runtime |
+| **LangChain skill system** | Python-class composition inside a LangChain agent | LangChain + Python | LangChain runtime |
+| **Windsurf cascades** | Cascade chains — sequences, not merges | Windsurf-only | Windsurf runtime |
 
 Different jobs. `skill-fuse` optimizes for "I want two skills to become one skill in my current project, right now, and I want the output to be readable Markdown I can commit."
 
 ## FAQ
 
-**What does skill-fuse produce?**
-A single `.md` file — a unified command definition with YAML frontmatter (name, description, trigger phrases) plus a Markdown body containing the merged skill logic. It's ready to commit and invoke immediately as a new `/command` in Claude Code, Cursor, Windsurf, or Gemini CLI.
+**How do I merge multiple Claude Code /commands into one?**
+Install skill-fuse in `.claude/skills/fuse/` and run `/fuse` from any Claude Code conversation — it detects overlapping skills in your project and generates a single unified `SKILL.md` that replaces the pile. Point it at two named skills (`/fuse shape + audit`) or let it pick from what's installed. The output is plain Markdown you can commit and hand-edit.
+
+**Can I combine Cursor rules to reduce clutter?**
+Yes. skill-fuse reads `.cursor/rules/` alongside `.agents/skills/` and `.claude/skills/`. Fusing two Cursor rules produces one composable rule set with a single trigger — less context overhead, fewer wrong-rule misfires when your agent is picking mid-task.
+
+**How do I deduplicate AI agent prompt instructions across tools?**
+skill-fuse composes two `SKILL.md` files into one, dropping duplicate system-prompt sections and merging trigger phrases. If you've installed `shape`, `audit`, and `refactor` and they each carry the same 200-line preamble, the fused output keeps that preamble once — token-efficient, human-readable, versionable.
 
 **How do I install skill-fuse?**
 Run `bash <(curl -sL https://raw.githubusercontent.com/gaia-research/skill-fuse/main/install.sh)` — it auto-detects your skills directory. Works with Claude Code (`.claude/skills/`), Cursor (`.cursor/rules/`), Windsurf and Codex (`.agents/skills/`), and Gemini CLI. Or clone manually into any of those paths.
 
+**How do I troubleshoot skill-fuse install errors?**
+Three most common: (1) `command not found: bash` on Windows — use Git Bash or WSL. (2) `Permission denied` writing to skills dir — `chmod +w` the target directory or run from a project you own. (3) `gh: command not found` when invoking `/fuse` — `skill-fuse` doesn't need `gh` itself but some fused skills do; install the [GitHub CLI](https://cli.github.com) and run `gh auth login`.
+
 **Which AI editors and agents does skill-fuse work with?**
 Claude Code, Cursor, Windsurf, Codex CLI, and Gemini CLI. Install in your agent's skills directory and invoke `/fuse` from any conversation. See the [compatibility table](#compatibility) for exact install paths per agent.
+
+**What does skill-fuse produce?**
+A single `.md` file — a unified command definition with YAML frontmatter (name, description, trigger phrases) plus a Markdown body containing the merged skill logic. It's ready to commit and invoke immediately as a new `/command` in Claude Code, Cursor, Windsurf, or Gemini CLI.
 
 **Does `skill-fuse` need an API key?**
 No — the fusion itself happens inside your existing agent's session. `skill-fuse` provides the routing logic and the composition prompt; your agent's LLM does the writing.
 
 **Can I fuse more than two skills?**
 Not in one call. Chain: fuse A + B → `AB`, then fuse `AB` + C → `ABC`. Keeps each merge reviewable.
-
-**How is this different from writing a custom skill by hand?**
-You still can. `skill-fuse` is for when you already have two skills that work and you want a merged one without re-writing from scratch. The output is a plain `SKILL.md` you can hand-edit after.
 
 ## Gaia integration (optional)
 
