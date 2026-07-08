@@ -36,7 +36,7 @@ Works with any AI coding agent that reads `SKILL.md` files: Claude Code, Codex, 
 One-liner:
 
 ```bash
-bash <(curl -sL https://raw.githubusercontent.com/mbtiongson1/skill-fuse/main/install.sh)
+bash <(curl -sL https://raw.githubusercontent.com/gaia-research/skill-fuse/main/install.sh)
 ```
 
 Or clone manually:
@@ -136,7 +136,7 @@ You still can. `skill-fuse` is for when you already have two skills that work an
 
 ## Gaia integration (optional)
 
-If you use [gaia-cli](https://github.com/mbtiongson1/gaia-skill-tree), fusions are automatically logged to `.gaia/fuse-log.json`. Run `gaia push` to propose your fused skill to the public registry.
+If you use [gaia-cli](https://github.com/gaia-research/gaia-skill-tree), fusions are automatically logged to `.gaia/fuse-log.json`. Run `gaia push` to propose your fused skill to the public registry.
 
 Not using Gaia? No problem. `skill-fuse` works standalone.
 
