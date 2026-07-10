@@ -160,44 +160,21 @@ Different jobs. `skill-fuse` optimizes for "I want two skills to become one skil
 
 ## FAQ
 
-**How do I merge multiple Claude Code /commands into one?**
-Install skill-fuse in `.claude/skills/fuse/`, run `/fuse` in any Claude Code session. Detects overlapping skills and generates one unified `SKILL.md` — output is plain Markdown you can commit.
-
-**skill-fuse vs LangChain?**
-LangChain composes Python classes at runtime inside a LangChain agent. skill-fuse composes plain `SKILL.md` files at author-time — no Python, no runtime, works with Claude Code / Cursor / Windsurf / Codex / Gemini CLI natively.
-
-**skill-fuse vs Cursor rules?**
-Cursor native rules layer `.cursor/rules/` files sequentially. skill-fuse *merges* them into one composable rule set — dedupes duplicate instructions, unifies triggers, no cross-file drift.
-
-**Why do I have too many slash commands?**
-You installed `shape`, `audit`, and `refactor` as separate skills. Each carries its own preamble, its own trigger, and the agent picks the wrong one mid-task. skill-fuse merges overlapping ones into a single `/command`.
-
-**How much does skill-fuse save on tokens?**
-Depends on skill overlap. A typical fusion of two `SKILL.md` files with a shared ~200-line preamble drops that duplication once, saving ~30–50% of the combined prompt budget per invocation.
-
-**Can I combine Cursor rules to reduce clutter?**
-Yes — skill-fuse reads `.cursor/rules/` alongside `.claude/skills/` and `.agents/skills/`. Fusing two Cursor rules gives one composable rule set with a single trigger.
-
-**How do I deduplicate AI agent prompt instructions across tools?**
-skill-fuse composes two `SKILL.md` files into one, dropping duplicate system-prompt sections and merging trigger phrases. Output is token-efficient, human-readable, versionable.
-
-**How do I install skill-fuse?**
-`bash <(curl -sL https://raw.githubusercontent.com/gaia-research/skill-fuse/main/install.sh)` — auto-detects your skills dir (Claude Code, Cursor, Windsurf, Codex, Gemini CLI).
-
-**How do I troubleshoot skill-fuse install errors?**
-Three most common: `bash` missing on Windows (use Git Bash/WSL), `Permission denied` on skills dir (`chmod +w`), or `gh` needed by a fused skill (install [GitHub CLI](https://cli.github.com)).
-
-**Which AI editors and agents does skill-fuse work with?**
-Claude Code, Cursor, Windsurf, Codex CLI, Gemini CLI. Install in your agent's skills directory and invoke `/fuse`. See the [compatibility table](#compatibility).
-
-**What does skill-fuse produce?**
-A single `.md` file — YAML frontmatter (name, description, triggers) plus a Markdown body with merged skill logic. Ready to commit and invoke as a new `/command`.
-
-**Does `skill-fuse` need an API key?**
-No — fusion happens inside your existing agent's session. skill-fuse provides the routing logic and composition prompt; your agent's LLM does the writing.
-
-**Can I fuse more than two skills?**
-Not in one call. Chain: fuse A + B → `AB`, then fuse `AB` + C → `ABC`. Keeps each merge reviewable.
+| Question | Answer |
+|---|---|
+| **How do I merge multiple Claude Code `/commands` into one?** | Install skill-fuse, run `/fuse` in any Claude Code session. Output is one committable `SKILL.md`. |
+| **skill-fuse vs LangChain?** | LangChain composes Python classes at runtime. skill-fuse composes `SKILL.md` files at author-time — no Python, no runtime. |
+| **skill-fuse vs Cursor rules?** | Cursor rules *layer* files sequentially. skill-fuse *merges* them: dedupes instructions, unifies triggers. |
+| **Why do I have too many slash commands?** | Each skill you install (`shape`, `audit`, `refactor`, …) ships its own preamble and trigger. Overlap makes the agent pick wrong. Fusion collapses them. |
+| **How much does it save on tokens?** | Two skills sharing a ~200-line preamble → ~30–50% off the combined prompt budget per invocation. Varies with overlap. |
+| **Can I fuse Cursor rules too?** | Yes. skill-fuse reads `.cursor/rules/`, `.claude/skills/`, and `.agents/skills/`. |
+| **How do I dedupe prompts across tools?** | Fuse two `SKILL.md` files. Duplicate system-prompt sections drop; trigger phrases merge. |
+| **How do I install it?** | `bash <(curl -sL https://raw.githubusercontent.com/gaia-research/skill-fuse/main/install.sh)` — auto-detects your skills dir. |
+| **Common install errors?** | `bash` missing on Windows → use Git Bash/WSL. `Permission denied` → `chmod +w` the skills dir. Missing `gh` → install [GitHub CLI](https://cli.github.com). |
+| **Which agents work?** | Claude Code, Cursor, Windsurf, Codex CLI, Gemini CLI. See [compatibility](#compatibility). |
+| **What does it produce?** | One `.md` file: YAML frontmatter (name, description, triggers) + merged Markdown body. |
+| **Does it need an API key?** | No. Your agent's LLM does the writing; skill-fuse only supplies routing + the composition prompt. |
+| **Can I fuse more than two skills?** | Not in one call. Chain: `A + B → AB`, then `AB + C → ABC`. Keeps each merge reviewable. |
 
 ## Gaia integration (optional)
 
