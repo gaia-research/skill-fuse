@@ -1,5 +1,7 @@
 # skill-fuse
 
+[![Gaia](https://gaiaskilltree.com/badges/_assets/gaia-research/skill-fuse.svg?repo=gaia-research%2Fgaia-skill-tree)](https://gaiaskilltree.com/named/#explorer/gaia-research/skill-fuse)
+
 > **AI agent command consolidator for Claude Code, Cursor, Windsurf, Codex, Gemini CLI**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
